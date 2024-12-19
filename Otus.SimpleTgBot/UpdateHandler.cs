@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Otus.SimpleTgBot
 {
@@ -27,10 +21,6 @@ namespace Otus.SimpleTgBot
             {
                 return;
             }
-            //if (update.Message.Text == "/stop")
-            //{
-            //    CloseApp(botClient);
-            //}
             OnHandleUpdateStarted?.Invoke(update.Message.Text);
             if (update.Message.Text == "/cat")
             {
@@ -50,21 +40,6 @@ namespace Otus.SimpleTgBot
         private static async Task SendMessege(ITelegramBotClient botClient, Update update, string text, CancellationToken cancellationToken)
         {
             await botClient.SendMessage(update.Message.Chat, text, cancellationToken: cancellationToken);
-        }
-
-        private void CloseApp(ITelegramBotClient botClient)
-        {
-            Console.WriteLine("Нажмите клавишу A для выхода");
-            var input = Console.ReadLine();
-            if (input == "A")
-            {
-                //await Task.(cancellationToken);
-            }
-            else
-            {
-                var user = botClient.GetMe();
-                Console.WriteLine($"{user.Id}");
-            }
         }
     }
 }

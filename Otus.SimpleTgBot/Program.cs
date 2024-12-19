@@ -1,6 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Polling;
+using Telegram.Bot.Types;
 
 namespace Otus.SimpleTgBot
 {
@@ -22,11 +23,13 @@ namespace Otus.SimpleTgBot
             try
             {
                 botClient.StartReceiving(handler, receiverOptions);
-                var cancellationToken = new CancellationTokenSource();
+                var cancellationTokenSource = new CancellationTokenSource();
 
                 var me = await botClient.GetMe();
                 Console.WriteLine($"{me.FirstName} запущен!");
-                await Task.Delay(-1); // Устанавливаем бесконечную задержку, чтобы наш бот работал постоянно
+
+                await Task.Delay(10000);
+                CloseApp(me, cancellationTokenSource);
             }
             finally
             {
@@ -43,6 +46,20 @@ namespace Otus.SimpleTgBot
         private static void OnHandleUpdateCompleted(string message)
         {
             Console.WriteLine($"Закончилась  обработка сообщения {message}");
+        }
+
+        private static void CloseApp(User user, CancellationTokenSource cancellation)
+        {
+            Console.WriteLine("Нажмите клавишу A для выхода");
+            var input = Console.ReadKey().KeyChar;
+            if (input == 'A')
+            {
+                cancellation.Cancel();
+            }
+            else
+            {
+                Console.WriteLine($"{user.Id}");
+            }
         }
     }
 }
